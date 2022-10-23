@@ -26,7 +26,7 @@ jobs:
       uses: github/codeql-action/upload-sarif@v1
       with:
         # Path to SARIF file relative to the root of the repository
-        sarif_file: mend-ubuntu.sarif
+        sarif_file: ubuntu.sarif
         
 ```
 
@@ -60,5 +60,5 @@ jobs:
         $API_KEY
         yes
         EOF
-        ./MNDCLI/mnd image Cotainer Image
+        ./MNDCLI/mnd image <ImageName:[Tag]> [FLAGS]
 ```
