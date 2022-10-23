@@ -1,0 +1,26 @@
+name: "Scan Container Image"
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+# This step checks out a copy of your repository.
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Scan image with Mend CLI
+      shell: bash
+      env:
+        USER_KEY: ${{ secrets.USER_KEY }}
+        API_KEY: ${{ secrets.API_KEY }}
+      run: |
+        mkdir -p ./.mnd/config
+        chmod +x MNDCLI/mnd
+        ./MNDCLI/mnd config h <<EOF
+        1
+        $USER_KEY
+        $API_KEY
+        yes
+        EOF
+        ./MNDCLI/mnd image --severity high nginx
+    
