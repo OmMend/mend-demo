@@ -60,5 +60,5 @@ jobs:
         $API_KEY
         yes
         EOF
-        ./MNDCLI/mnd image <ImageName:[Tag]> [FLAGS]
+        ./MNDCLI/mnd image <ImageName:[Tag]> [FLAGS] 
 ```
