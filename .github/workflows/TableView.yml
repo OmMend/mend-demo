@@ -13,14 +13,12 @@ jobs:
       env:
         USER_KEY: ${{ secrets.USER_KEY }}
         API_KEY: ${{ secrets.API_KEY }}
+        USER_EMAIL: ${{ secrets.USER_EMAIL }}
+        DEV_URL_APP: ${{ secrets.DEV_URL_APP }}
+        DEV_ENV_URL_S3: ${{ secrets.DEV_ENV_URL_S3 }}
       run: |
         mkdir -p ./.mnd/config
         chmod +x MNDCLI/mnd
-        ./MNDCLI/mnd config h <<EOF
-        1
-        $USER_KEY
-        $API_KEY
-        yes
-        EOF
+        mnd auth login --user-key $USER_KEY --email @USER_EMAIL --url @DEV_URL_APP --json @DEV_ENV_URL_S3
         ./MNDCLI/mnd image --severity high nginx
     
