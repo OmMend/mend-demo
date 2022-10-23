@@ -19,6 +19,6 @@ jobs:
       run: |
         mkdir -p ./.mnd/config
         chmod +x MNDCLI/mnd
-        mnd auth login --user-key $USER_KEY --email @USER_EMAIL --url @DEV_URL_APP --json @DEV_ENV_URL_S3
+        ./MNDCLI/mnd auth login --user-key $USER_KEY --email @USER_EMAIL --url @DEV_URL_APP --json @DEV_ENV_URL_S3
         ./MNDCLI/mnd image --severity high nginx
     
