@@ -1,0 +1,36 @@
+name: Scan, Build, and Deploy Docker Image
+
+on: [push]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        run: |
+          docker build -t my-image .
+      - name: Scan base image for vulnerabilities
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest my-image
+      - name: Check for critical vulnerabilities
+        run: |
+          CRITICAL_VULNERABILITIES=$(trivy --severity CRITICAL --no-progress --format json my-image | jq '. | length')
+          if [ "$CRITICAL_VULNERABILITIES" -gt "0" ]; then
+            echo "Found critical vulnerabilities in base image. Failing build."
+            exit 1
+          else
+            echo "No critical vulnerabilities found in base image. Pushing to registry."
+          fi
+      - name: Push image to registry
+        if: success()
+        run: |
+          docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD
+          docker push my-image
+      - name: Deploy image using YAML file
+        if: success()
+        uses: actions/kubectl@v2
+        with:
+          args: apply -f deployment.yaml
