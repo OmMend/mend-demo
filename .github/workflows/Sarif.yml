@@ -26,7 +26,7 @@ jobs:
     - name: Convert to sarif
       run: |
         sudo pip install joern2sarif
-        joern2sarif -t mend -i ${GITHUB_WORKSPACE}/secret.json -o ${GITHUB_WORKSPACE}/secrets.sarif
+        joern2sarif -t joern -i ${GITHUB_WORKSPACE}/secret.json -o ${GITHUB_WORKSPACE}/secrets.sarif
       
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
